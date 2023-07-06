@@ -1,0 +1,32 @@
+$text-black: #404040;
+$gray: #707070;
+$white: #ffffff;
+$bg-color: #f5f5f5;
+
+
+
+
+
+
+$breakpoints: (
+    "sm": "screen and (max-width: 400px)",
+    "md": "screen and (max-width: 768px)",
+    "lg": "screen and (max-width: 1000px)",
+    "xl": "screen and (max-width: 1200px)",
+    "xxl": "screen and (min-width: 1920px)",
+) !default;
+
+@mixin mq($breakpoint) {
+  @media #{map-get($breakpoints, $breakpoint)} {
+      @content;
+  }
+}
+
+html {
+  font-size: 16px;
+  color: $text-black;
+  background-color: $bg-color;
+  @include mq(lg) {
+    font-size: 14px;
+  }
+}
