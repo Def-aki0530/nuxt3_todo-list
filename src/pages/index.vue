@@ -11,7 +11,7 @@
         />
       </template>
     </draggable>
-    <AddButton @click="addMemo()" />
+    <AddButton @click="addMemo" />
   </div>
   
 </template>
