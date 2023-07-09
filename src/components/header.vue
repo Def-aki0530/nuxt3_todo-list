@@ -1,6 +1,6 @@
 <template>
   <div class="header">
-    <img src="@/assets/img/survey-line.svg">
+    <img src="@/assets/img/survey-line.svg" alt="list">
     <h1>TO DO LIST</h1>
   </div>
 </template>

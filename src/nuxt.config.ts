@@ -7,9 +7,10 @@ export default defineNuxtConfig({
       charset: 'utf-8',
       viewport: 'width=device-width, initial-scale=1',
       title: 'TO DO LIST',
-      description: 'Nuxt3 to do list'
-    }
+      description: 'Nuxt3 to do list',
+    },
   },
+  
   vite: {
     css: {
       preprocessorOptions: {
@@ -19,5 +20,17 @@ export default defineNuxtConfig({
       },
     },
   },
+
   css: ['@/assets/css/reset.css'],
+
+  plugins: [
+  ],
+
+  modules: ['dayjs-nuxt'],
+
+  dayjs: {
+    locales: ['ja'],
+    defaultLocale: 'ja',
+    defaultTimeZone: 'Asia/Tokyo',
+  },
 })
