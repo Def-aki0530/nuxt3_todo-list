@@ -1,36 +1,61 @@
 <template>
   <Header />
   <div class="wrapper">
-    <template v-for="(item, index) in list" :key="index">
-      <Memo 
-        v-model:text=item.text 
-        v-model:date=item.date 
-        v-model:check=item.check
-        @deleteMemo="deleteMemo(index)"
-        @saveData="saveData"
-      />
-    </template>
-    <AddButton @click="addMemo" />
-    <template v-for="(item, index) in list" :key="index">
-      <div>{{ item.text }}</div>
-      <div>{{ item.date }}</div>
-      <div>{{ item.check }}</div>
-    </template>
+    <draggable v-model="list" item-key="no" tag="ul">
+      <template #item="{ element, index }">
+        <Memo
+          v-model:text=element.text 
+          v-model:date=element.date 
+          v-model:check=element.check
+          @deleteMemo="deleteMemo(index)"
+        />
+      </template>
+    </draggable>
+    <AddButton @click="addMemo()" />
   </div>
   
 </template>
 <script setup lang="ts">
+import draggable from 'vuedraggable'
+
+const components = {
+  draggable: draggable
+}
+
 interface Memo {
   text: string
   date: string | null
   check: Boolean
 }
 
-const list: Memo[] = ref([
-  { text: 'aaa', date: null, check: false },
-  { text: 'bbb', date: '2023-01-01', check: true },
-  { text: 'ccc', date: null, check: false },    
-])
+const list = ref([] as Memo[])
+
+onMounted(() => {
+  const json: any = localStorage.getItem('nuxt3ToDoList') === null ? '' : localStorage.getItem('nuxt3ToDoList')
+  list.value = JSON.parse(json)
+})
+
+watch(
+  list,
+  () => {
+    if (window.localStorage) {
+      let json = JSON.stringify(list.value, undefined, 1)
+      localStorage.setItem('nuxt3ToDoList', json)
+    } else {
+      alert('ブラウザのローカルストレージの設定を有効にしてください')
+    }
+  },
+  { deep: true }
+)
+
+if (list.value == '') {
+  const newMemo: Memo = {
+    text: '',
+    date: null,
+    check: false
+  }
+  list.value.push(newMemo)
+}
 
 const deleteMemo = (index: number): void => {
   list.value.splice(index, 1)
@@ -43,11 +68,6 @@ const addMemo = (): void => {
     check: false
   }
   list.value.push(newMemo)
-}
-
-const saveData = ():void => {
-  let json = JSON.stringify(list, undefined, 1)
-  localStorage.setItem('nuxt3ToDoList', json)
 }
 
 </script>

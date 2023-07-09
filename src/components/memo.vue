@@ -5,13 +5,13 @@
     </div>
     <div class="memo-contents">
       <button class="memo-check" @click="switchCheck">
-        <img src="@/assets/img/checkbox-circle-fill.svg" v-if="checkFlag">
+        <img src="@/assets/img/checkbox-circle-fill.svg" v-if="check">
         <img src="@/assets/img/checkbox-blank-circle-line.svg" v-else>
       </button>
       <div class="memo-detail">
-        <textarea v-bind:class="checkFlag ? 'color-gray' : 'color-black'" class="memo-text" maxlength="32" wrap="soft" 
-          :value="text"
-          
+        <textarea class="memo-text" maxlength="32" wrap="soft" 
+          v-bind:class="check ? 'color-gray' : 'color-black'"
+          :value="text"          
           @input="emit('update:text', $event.target.value)"
         ></textarea>
         <div class="memo-data">
@@ -47,26 +47,32 @@ const props = defineProps({
   check: Boolean
 })
 
-const emit = defineEmits(['update:text', 'update:date','update:check'])
+const emit = defineEmits([
+  'update:text', 
+  'update:date',
+  'update:check',
+  'deleteMemo',
+])
 
-const checkFlag: boolean = ref(props.check)
+const checkFlag = ref(props.check as boolean)
 const switchCheck = (): void => {
   checkFlag.value = !checkFlag.value
   emit('update:check', checkFlag.value)
 }
 
 const dayjs = useDayjs()
-const dateFormat: string = ref(dayjs(props.date).format('MM/DD (ddd)'))
+const dateFormat = ref(dayjs(props.date).format('MM/DD (ddd)') as string)
 const updateDate = (): void => {
   dateFormat.value = dayjs(props.date).format('MM/DD (ddd)')
 }
 
+watch(
+  () => props.date,
+  updateDate
+)
+
 const deleteMemo = (): void => {
   emit('deleteMemo')
-}
-
-const saveData = ():void => {
-  emit('saveData')
 }
 
 </script>
@@ -215,6 +221,7 @@ const saveData = ():void => {
   span {
     font-size: 14px;
     font-weight: 500;
+    color: $gray;
     margin-left: 4px;
   }
 }
