@@ -1,7 +1,7 @@
 <template>
   <Header />
   <div class="wrapper">
-    <draggable v-model="list" item-key="no" tag="ul">
+    <draggable v-model="list" item-key="id" animation="300" handle=".handle">
       <template #item="{ element, index }">
         <Memo
           v-model:text=element.text 

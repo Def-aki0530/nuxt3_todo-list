@@ -1,6 +1,6 @@
 <template>
   <div class="memo">
-    <div class="memo-draggable">
+    <div class="memo-draggable handle">
       <img src="@/assets/img/draggable.svg" alt="draggable">
     </div>
     <div class="memo-contents">
