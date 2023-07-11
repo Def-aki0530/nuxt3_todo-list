@@ -3,7 +3,7 @@
     <img src="@/assets/img/add-line.svg" alt="list">
   </div>
 </template>
-<script>
+<script setup lang="ts">
 
 </script>
 <style lang="scss">
@@ -17,6 +17,9 @@
   border-radius: 4px;
   margin: 16px auto 0;
   cursor: pointer;
+  &:hover {
+    background-color: $light-gray;
+  }
   img {
     width: 24px;
     height: 24px;

@@ -1,5 +1,7 @@
 <template>
-  <Header />
+  <Header 
+    @unshiftMemo="unshiftMemo"
+  />
   <div class="wrapper">
     <draggable v-model="list" item-key="id" animation="300" handle=".handle">
       <template #item="{ element, index }">
@@ -11,7 +13,7 @@
         />
       </template>
     </draggable>
-    <AddButton @click="addMemo" />
+    <AddButton @click="pushMemo" />
   </div>
   
 </template>
@@ -31,8 +33,20 @@ interface Memo {
 const list = ref([] as Memo[])
 
 onMounted(() => {
-  const json: any = localStorage.getItem('nuxt3ToDoList') === null ? '' : localStorage.getItem('nuxt3ToDoList')
-  list.value = JSON.parse(json)
+  if (window.localStorage) {
+    const json: any = localStorage.getItem('nuxt3ToDoList') === null ? '' : localStorage.getItem('nuxt3ToDoList')
+    list.value = JSON.parse(json)
+    if (list.value == '') {
+      const newMemo: Memo = {
+        text: '',
+        date: null,
+        check: false
+      }
+      list.value.push(newMemo)
+    }
+  } else {
+    alert('ブラウザのローカルストレージの設定を有効にしてください')
+  }
 })
 
 watch(
@@ -48,26 +62,26 @@ watch(
   { deep: true }
 )
 
-if (list.value == '') {
-  const newMemo: Memo = {
-    text: '',
-    date: null,
-    check: false
-  }
-  list.value.push(newMemo)
-}
-
 const deleteMemo = (index: number): void => {
   list.value.splice(index, 1)
 }
 
-const addMemo = (): void => {
+const pushMemo = (): void => {
   const newMemo: Memo = {
     text: '',
     date: null,
     check: false
   }
   list.value.push(newMemo)
+}
+
+const unshiftMemo = (): void => {
+  const newMemo: Memo = {
+    text: '',
+    date: null,
+    check: false
+  }
+  list.value.unshift(newMemo)
 }
 
 </script>
@@ -77,6 +91,9 @@ const addMemo = (): void => {
   max-width: 780px;
   margin: 0 auto;
   padding: 32px 20px;
+  @include mq(md) {
+    padding: 32px 20px;
+  }
 }
 
 </style>

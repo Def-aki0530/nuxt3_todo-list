@@ -9,8 +9,8 @@
         <img src="@/assets/img/checkbox-blank-circle-line.svg" v-else>
       </button>
       <div class="memo-detail">
-        <textarea class="memo-text" maxlength="32" wrap="soft" 
-          v-bind:class="check ? 'color-gray' : 'color-black'"
+        <textarea class="memo-text" maxlength="32" wrap="soft" spellcheck="false"
+          v-bind:class="check ? 'color-light-gray' : 'color-black'"
           :value="text"          
           @input="emit('update:text', $event.target.value)"
         ></textarea>
@@ -18,7 +18,10 @@
           <span class="memo-length">{{ text.length }}/32</span>
           <span></span>
           <div class="memo-date">
-            <label class="memo-calendar">
+            <label 
+              class="memo-calendar"
+              v-bind:class="check ? 'memo-calendar-light-gray' : 'memo-calendar-gray'"
+            >
               <input 
                 type="date" 
                 :value="date"
@@ -27,7 +30,10 @@
               >
             </label>
             <template v-if="date">
-              <span>{{ dateFormat }}</span>
+              <span 
+                class="memo-date-text"
+                v-bind:class="check ? 'color-light-gray' : 'color-gray'"
+              >{{ dateFormat }}</span>
             </template>
           </div>
         </div>
@@ -102,7 +108,7 @@ const deleteMemo = (): void => {
   background: $white;
   border-radius: 4px 0 0 4px;
   margin-right: 4px;
-  cursor: pointer;
+  cursor: move;
   @include mq(md) {
     height: 96px;
   }
@@ -159,8 +165,12 @@ const deleteMemo = (): void => {
   }
 }
 
-.color-gray {
+.color-light-gray {
   color: $light-gray;
+}
+
+.color-gray {
+  color: $gray;
 }
 
 .color-black {
@@ -218,12 +228,12 @@ const deleteMemo = (): void => {
   display: flex;
   justify-content: flex-end;
   align-items: center;
-  span {
-    font-size: 14px;
-    font-weight: 500;
-    color: $gray;
-    margin-left: 4px;
-  }
+}
+
+.memo-date-text {
+  font-size: 14px;
+  font-weight: 500;
+  margin-left: 4px;
 }
 
 .memo-calendar {
@@ -260,6 +270,9 @@ const deleteMemo = (): void => {
       cursor: pointer;
     }
   }
+}
+
+.memo-calendar-gray {
   &::before {
     position: absolute;
     content: "";
@@ -267,7 +280,19 @@ const deleteMemo = (): void => {
     right: 0;
     width: 16px;
     height: 16px;
-    background-image: url("@/assets/img/calendar-line.svg");
+    background-image: url("@/assets/img/calendar-line-gray.svg");
+  }
+}
+
+.memo-calendar-light-gray {
+  &::before {
+    position: absolute;
+    content: "";
+    top: 0;
+    right: 0;
+    width: 16px;
+    height: 16px;
+    background-image: url("@/assets/img/calendar-line-light-gray.svg");
   }
 }
 
