@@ -37,12 +37,7 @@ onMounted(() => {
     const json: any = localStorage.getItem('nuxt3ToDoList') === null ? '' : localStorage.getItem('nuxt3ToDoList')
     list.value = JSON.parse(json)
     if (list.value == '') {
-      const newMemo: Memo = {
-        text: '',
-        date: null,
-        check: false
-      }
-      list.value.push(newMemo)
+      addMemo('push')
     }
   } else {
     alert('ブラウザのローカルストレージの設定を有効にしてください')
