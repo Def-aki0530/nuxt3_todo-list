@@ -1,6 +1,6 @@
 <template>
   <Header 
-    @unshiftMemo="unshiftMemo"
+    @addMemo="addMemo('unshift')"
   />
   <div class="wrapper">
     <draggable v-model="list" item-key="id" animation="300" handle=".handle">
@@ -13,7 +13,7 @@
         />
       </template>
     </draggable>
-    <AddButton @click="pushMemo" />
+    <AddButton @click="addMemo('push')" />
   </div>
   
 </template>
@@ -66,22 +66,18 @@ const deleteMemo = (index: number): void => {
   list.value.splice(index, 1)
 }
 
-const pushMemo = (): void => {
+const addMemo = (option: string): void => {
   const newMemo: Memo = {
     text: '',
     date: null,
     check: false
   }
-  list.value.push(newMemo)
-}
-
-const unshiftMemo = (): void => {
-  const newMemo: Memo = {
-    text: '',
-    date: null,
-    check: false
+  if (option == 'push') {
+    list.value.push(newMemo)
   }
-  list.value.unshift(newMemo)
+  if ( option == 'unshift') {
+    list.value.unshift(newMemo)
+  }
 }
 
 </script>

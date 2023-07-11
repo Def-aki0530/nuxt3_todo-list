@@ -6,7 +6,7 @@
         <img src="@/assets/img/survey-line.svg" alt="list">
         <h1>TO DO LIST</h1>
       </div>
-      <div class="header-add-button" @click="unshiftMemo">
+      <div class="header-add-button" @click="addMemo">
         <img src="@/assets/img/add-line.svg" alt="list">
       </div>
     </div>
@@ -14,11 +14,11 @@
 </template>
 <script setup lang="ts">
 const emit = defineEmits([
-  'unshiftMemo',
+  'addMemo',
 ])
 
-const unshiftMemo = (): void => {
-  emit('unshiftMemo')
+const addMemo = (): void => {
+  emit('addMemo')
 }
 
 </script>
