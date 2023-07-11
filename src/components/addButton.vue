@@ -8,13 +8,13 @@
 </script>
 <style lang="scss">
 .add-button {
-  width: 90px;
-  height: 50px;
+  width: 48px;
+  height: 48px;
   display: flex;
   justify-content: center;
   align-items: center;
   background-color: $gray-white;
-  border-radius: 4px;
+  border-radius: 24px;
   margin: 16px auto 0;
   cursor: pointer;
   &:hover {
