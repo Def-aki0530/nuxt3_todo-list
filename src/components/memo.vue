@@ -5,8 +5,8 @@
     </div>
     <div class="memo-contents">
       <button class="memo-check" @click="switchCheck">
-        <img src="@/assets/img/checkbox-circle-fill.svg" v-if="check">
-        <img src="@/assets/img/checkbox-blank-circle-line.svg" v-else>
+        <img src="@/assets/img/checkbox-circle-fill.svg" alt="on" v-if="check">
+        <img src="@/assets/img/checkbox-blank-circle-line.svg" alt="off" v-else>
       </button>
       <div class="memo-detail">
         <textarea class="memo-text" maxlength="32" wrap="soft" spellcheck="false"
@@ -38,7 +38,7 @@
           </div>
         </div>
       </div>
-      <button class="memo-delete" @click="deleteMemo">
+      <button class="memo-delete" aria-label="delete-button" @click="deleteMemo">
         <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
           <path class="close-fill" d="M7.0007 5.5865L11.9504 0.636719L13.3646 2.05093L8.4149 7.0007L13.3646 11.9504L11.9504 13.3646L7.0007 8.4149L2.05093 13.3646L0.636719 11.9504L5.5865 7.0007L0.636719 2.05093L2.05093 0.636719L7.0007 5.5865Z"/>
         </svg>

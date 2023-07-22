@@ -1,5 +1,7 @@
 <template>
   <Header 
+    :pick=picked
+    v-model:picked=picked
     @addMemo="addMemo('unshift')"
   />
   <div class="wrapper">
@@ -31,14 +33,22 @@ interface Memo {
 }
 
 const list = ref([] as Memo[])
+const picked = ref()
 
 onMounted(() => {
   if (window.localStorage) {
-    const json: any = localStorage.getItem('nuxt3ToDoList')
+    const listId: any = localStorage.getItem('nuxt3ToDoListId')
+    if (listId == 1 || listId == 2) {
+      picked.value = listId
+    } else {
+      picked.value = '1'
+    }
+    const json: any = localStorage.getItem('nuxt3ToDoList' + picked.value)
     const data = JSON.parse(json || 'null')
     if (data) {
       list.value = data
     } else {
+      list.value = []
       addMemo('push')
     }
   } else {
@@ -51,12 +61,31 @@ watch(
   () => {
     if (window.localStorage) {
       let json = JSON.stringify(list.value, undefined, 1)
-      localStorage.setItem('nuxt3ToDoList', json)
+      localStorage.setItem('nuxt3ToDoList' + picked.value, json)
     } else {
       alert('ブラウザのローカルストレージの設定を有効にしてください')
     }
   },
   { deep: true }
+)
+
+watch(
+  picked,
+  () => {
+    if (window.localStorage) {
+      localStorage.setItem('nuxt3ToDoListId', picked.value)
+      const json: any = localStorage.getItem('nuxt3ToDoList' + picked.value)
+      const data = JSON.parse(json || 'null')
+      if (Array.isArray(data) && data.length !== 0) {
+        list.value = data
+      } else {
+        list.value = []
+        addMemo('push')
+      }
+    } else {
+      alert('ブラウザのローカルストレージの設定を有効にしてください')
+    }
+  }
 )
 
 const deleteMemo = (index: number): void => {
