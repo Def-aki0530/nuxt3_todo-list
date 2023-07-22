@@ -1,23 +1,32 @@
 <template>
   <Header 
-    :pick=picked
-    v-model:picked=picked
+    :pick="picked"
+    v-model:picked="picked"
     @addMemo="addMemo('unshift')"
   />
   <div class="wrapper">
     <draggable v-model="list" item-key="id" animation="300" handle=".handle">
       <template #item="{ element, index }">
         <Memo
-          v-model:text=element.text 
-          v-model:date=element.date 
-          v-model:check=element.check
+          v-model:text="element.text"
+          v-model:date="element.date"
+          v-model:check="element.check"
+          :information="element.information"
           @deleteMemo="deleteMemo(index)"
+          @showModal="showModal(index)"
         />
       </template>
     </draggable>
     <AddButton @click="addMemo('push')" />
   </div>
-
+  <Modal 
+    v-if="modalVisible"
+    :id="picked"
+    :index="modalIndex"
+    @close="closeModal"
+    @information="updateInformation"
+    
+  />
 </template>
 <script setup lang="ts">
 import draggable from 'vuedraggable'
@@ -30,15 +39,16 @@ interface Memo {
   text: string
   date: string | null
   check: Boolean
+  information: string
 }
 
-const list = ref([] as Memo[])
-const picked = ref()
+const list = ref([] as Array<Memo>)
+const picked = ref('' as String)
 
 onMounted(() => {
   if (window.localStorage) {
     const listId: any = localStorage.getItem('nuxt3ToDoListId')
-    if (listId == 1 || listId == 2) {
+    if (listId == '1' || listId == '2') {
       picked.value = listId
     } else {
       picked.value = '1'
@@ -96,7 +106,8 @@ const addMemo = (option: string): void => {
   const newMemo: Memo = {
     text: '',
     date: null,
-    check: false
+    check: false,
+    information: ''
   }
   if (option == 'push') {
     list.value.push(newMemo)
@@ -106,6 +117,19 @@ const addMemo = (option: string): void => {
   }
 }
 
+const modalVisible = ref(false as boolean)
+const modalIndex = ref(0 as number)
+const closeModal = (): void => {
+  modalVisible.value = false
+}
+const showModal = (index: number): void => {
+  modalVisible.value = true
+  modalIndex.value = index
+}
+
+const updateInformation = (informationText: string): void => {
+  list.value[modalIndex.value].information = informationText
+}
 </script>
 <style lang="scss">
 .wrapper {

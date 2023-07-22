@@ -17,24 +17,32 @@
         <div class="memo-data">
           <span class="memo-length">{{ text.length }}/32</span>
           <span></span>
-          <div class="memo-date">
-            <label 
-              class="memo-calendar"
-              v-bind:class="check ? 'memo-calendar-light-gray' : 'memo-calendar-gray'"
-            >
-              <input 
-                type="date" 
-                :value="date"
-                @input="emit('update:date', $event.target.value)"
-                @change="updateDate"
+          <div class="memo-icons">
+            <div class="memo-information" @click="showModal">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path v-bind:class="check && information.length ? 'fill-light-gray' : information.length ? 'fill-gray' : 'fill-bg'" d="M12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12C22 17.5228 17.5228 22 12 22ZM12 20C16.4183 20 20 16.4183 20 12C20 7.58172 16.4183 4 12 4C7.58172 4 4 7.58172 4 12C4 16.4183 7.58172 20 12 20ZM11 7H13V9H11V7ZM11 11H13V17H11V11Z"></path>
+              </svg>
+            </div>
+            <span></span>
+            <div class="memo-date">
+              <label 
+                class="memo-calendar"
+                v-bind:class="check ? 'memo-calendar-light-gray' : 'memo-calendar-gray'"
               >
-            </label>
-            <template v-if="date">
-              <span 
-                class="memo-date-text"
-                v-bind:class="check ? 'color-light-gray' : 'color-gray'"
-              >{{ dateFormat }}</span>
-            </template>
+                <input 
+                  type="date" 
+                  :value="date"
+                  @input="emit('update:date', $event.target.value)"
+                  @change="updateDate"
+                >
+              </label>
+              <template v-if="date">
+                <span 
+                  class="memo-date-text"
+                  v-bind:class="check ? 'color-light-gray' : 'color-gray'"
+                >{{ dateFormat }}</span>
+              </template>
+            </div>
           </div>
         </div>
       </div>
@@ -50,7 +58,8 @@
 const props = defineProps({
   text: String,
   date: String,
-  check: Boolean
+  check: Boolean,
+  information: String
 })
 
 const emit = defineEmits([
@@ -58,6 +67,7 @@ const emit = defineEmits([
   'update:date',
   'update:check',
   'deleteMemo',
+  'showModal'
 ])
 
 const checkFlag = ref(props.check as boolean)
@@ -72,6 +82,10 @@ const updateDate = (): void => {
   dateFormat.value = dayjs(props.date).format('MM/DD (ddd)')
 }
 
+const showModal = (): void => {
+  emit('showModal')
+}
+
 watch(
   () => props.date,
   updateDate
@@ -82,7 +96,7 @@ const deleteMemo = (): void => {
 }
 
 </script>
-<style lang="scss">
+<style scoped lang="scss">
 .memo {
   width: 100%;
   max-width: 740px;
@@ -177,8 +191,20 @@ const deleteMemo = (): void => {
   color: $text-black;
 }
 
+.fill-light-gray {
+  fill: $light-gray;
+}
+
+.fill-bg {
+  fill: $bg-color;
+}
+
+.fill-gray {
+  fill: $gray;
+}
+
 .memo-text {
-  width: calc(100% - 140px);
+  width: calc(100% - 146px);
   height: 24px;
   border: none;
   outline: none;
@@ -195,6 +221,9 @@ const deleteMemo = (): void => {
     &+.memo-data > .memo-length {
       display: block;
     }
+    &+.memo-data > .memo-icons > .memo-information {
+      display: none;
+    }
   }
   @include mq(md) {
     width: 100%;
@@ -207,7 +236,7 @@ const deleteMemo = (): void => {
 }
 
 .memo-data {
-  width: 132px;
+  width: 138px;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -224,27 +253,54 @@ const deleteMemo = (): void => {
   margin-right: 8px;
 }
 
+.memo-information {
+  width: 24px;
+  height: 24px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 12px;
+  margin-right: 8px;
+  cursor: pointer;
+  &:hover {
+    background: $bg-color;
+    path {
+      fill: $light-gray;
+    }
+  }
+}
+
 .memo-date {
   display: flex;
   justify-content: flex-end;
   align-items: center;
 }
 
+.memo-icons {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  @include mq(md) {
+    justify-content: space-between;
+    width: 100%;
+  }
+}
+
 .memo-date-text {
   font-size: 14px;
   font-weight: 500;
-  margin-left: 4px;
+  margin-left: 8px;
 }
 
 .memo-calendar {
   position: relative;
   display: block;
-  width: 16px;
-  height: 16px;
+  width: 18px;
+  height: 18px;
   input[type=date] {
     position: relative;
-    width: 16px;
-    height: 16px;
+    width: 18px;
+    height: 18px;
     border: none;
     outline: none;
     background: none;
@@ -278,9 +334,10 @@ const deleteMemo = (): void => {
     content: "";
     top: 0;
     right: 0;
-    width: 16px;
-    height: 16px;
+    width: 18px;
+    height: 18px;
     background-image: url("@/assets/img/calendar-line-gray.svg");
+    background-repeat: no-repeat;
   }
 }
 
@@ -290,9 +347,10 @@ const deleteMemo = (): void => {
     content: "";
     top: 0;
     right: 0;
-    width: 16px;
-    height: 16px;
+    width: 18px;
+    height: 18px;
     background-image: url("@/assets/img/calendar-line-light-gray.svg");
+    background-repeat: no-repeat;
   }
 }
 

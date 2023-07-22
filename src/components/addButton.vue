@@ -6,7 +6,7 @@
 <script setup lang="ts">
 
 </script>
-<style lang="scss">
+<style scoped lang="scss">
 .add-button {
   width: 48px;
   height: 48px;
