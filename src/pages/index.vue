@@ -15,7 +15,7 @@
     </draggable>
     <AddButton @click="addMemo('push')" />
   </div>
-  
+
 </template>
 <script setup lang="ts">
 import draggable from 'vuedraggable'
@@ -34,9 +34,11 @@ const list = ref([] as Memo[])
 
 onMounted(() => {
   if (window.localStorage) {
-    const json: any = localStorage.getItem('nuxt3ToDoList') === null ? '' : localStorage.getItem('nuxt3ToDoList')
-    list.value = JSON.parse(json)
-    if (list.value == '') {
+    const json: any = localStorage.getItem('nuxt3ToDoList')
+    const data = JSON.parse(json || 'null')
+    if (data) {
+      list.value = data
+    } else {
       addMemo('push')
     }
   } else {
