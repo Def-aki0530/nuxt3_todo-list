@@ -1,8 +1,12 @@
-FROM node:lts-alpine
+FROM node:18-bullseye
 
-RUN mkdir src
+WORKDIR /src
 
-RUN apk update && \
-    apk upgrade && \
-    apk add git && \
-    npm install -g npm@latest nuxi nuxt3
+RUN apt-get update && \
+    apt-get upgrade -y && \
+    apt-get install -y git && \
+    rm -rf /var/lib/apt/lists/*
+
+RUN npm install -g nuxi
+
+CMD ["npm", "run", "dev"]

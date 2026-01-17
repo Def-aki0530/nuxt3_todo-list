@@ -5,7 +5,7 @@
     @addMemo="addMemo('unshift')"
   />
   <div class="wrapper">
-    <draggable v-model="list" item-key="id" animation="300" handle=".handle">
+    <draggable v-model="list" item-key="id" animation="300" handle=".handle" class="memo-list">
       <template #item="{ element, index }">
         <Memo
           v-model:text="element.text"
@@ -134,7 +134,7 @@ const updateInformation = (informationText: string): void => {
 <style lang="scss">
 .wrapper {
   width: 100%;
-  max-width: 780px;
+  max-width: 800px;
   margin: 0 auto;
   padding: 32px 20px;
   @include mq(md) {
@@ -142,4 +142,9 @@ const updateInformation = (informationText: string): void => {
   }
 }
 
+.memo-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
 </style>

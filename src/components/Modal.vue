@@ -73,17 +73,15 @@ const close = (): void => {
   transform: translate(-50%, -50%);
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: center;
+  gap: 8px;
   
   // modal-style
   background-color: $white;
-  max-width: 640px;
+  max-width: 1280px;
   width: calc(100% - 60px);
-  max-height: 500px;
   height: calc(100vh - 60px);
   border-radius: 4px;
-  padding: 20px;
+  padding: 20px 24px;
 }
 
 .modal-header{
@@ -99,8 +97,8 @@ const close = (): void => {
 }
 
 .modal-close {
-  width: 30px;
-  height: 30px;
+  width: 24px;
+  height: 24px;
   display: flex;
   justify-content: center;
   align-items: center;

@@ -6,7 +6,6 @@ services:
     volumes:
       - ./src:/src:cached
       - node_modules:/src/node_modules
-      # ↑ 初回起動後にコメントアウトを解除
     working_dir: "/src"
     ports:
       - "3000:3000"
